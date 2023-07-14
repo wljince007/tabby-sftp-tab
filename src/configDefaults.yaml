@@ -1,8 +1,3 @@
-hotkeys:
-  profile:
-    __nonStructural: true
-  profile-selectors:
-    __nonStructural: true
 profiles:
   - type: local
     name: ssh2sftp_win_template

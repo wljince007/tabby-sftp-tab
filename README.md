@@ -2,10 +2,53 @@
 
 Plugin for the [Tabby Terminal](https://github.com/Eugeny/tabby)
 
-This simple plugin allows you to set a hotkey to open sftp tab like SecureCRT (default hotkey: Ctrl-Shift-S).
+This simple plugin allows you click a context menu(Open Sftp Tab) or press a hotkey(Ctrl-Shift-S) to open sftp tab like SecureCRT for ssh connection. 
+
+## Installation
+
+* Install [tabby](https://tabby.sh/) first, and then install the `sftp-tab` plugin.
+
+![tabby-sftp-tab plugin](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/install.png?raw=true)
+
+
+## Configuration
+
+![tabby-sftp-tab setting_ssh2sftp_template](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/setting_ssh2sftp_template.png?raw=true)
+
+* On window this plugin will use ssh2sftp_win_template profile to open sftp tab of ssh tab connection, you need fix sftp.exe path by edit profiles.ssh2sftp_win_template.command. It is recommended to install [git for Windows](https://gitforwindows.org/) and then use the path [git install dir]\usr\bin\sftp.exe, because it provide tab completion. :
+  
+![tabby-sftp-tab setting_ssh2sftp_win_template](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/setting_ssh2sftp_win_template.png?raw=true)
+
+* On linux this plugin will use ssh2sftp_linux_template profile to open sftp tab of ssh tab connection, default sftp provide tab completion.:
+  
+![tabby-sftp-tab setting_ssh2sftp_linux_template](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/setting_ssh2sftp_linux_template.png?raw=true)
+
+* On macos this plugin will use ssh2sftp_mac_template profile to open sftp tab of ssh tab connection, you need fix sftp path by edit profiles.ssh2sftp_mac_template.command. It is recommended to install openssh (command: brew install openssh) and then use the path /usr/local/opt/openssh/bin/sftp, because it provide tab completion.
+  
+![tabby-sftp-tab setting_ssh2sftp_mac_template](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/setting_ssh2sftp_mac_template.png?raw=true)
+
+* setging hotkey:
+  
+![tabby-sftp-tab setting](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/setting_hotkey.png?raw=true)
+
+
+
+## Screenshot
+
+* Using sftp-tab in tabby, for ssh connection tab, click to open context menu, select "Open Sftp Tab". or press hotkey(default: Ctrl-Shift-S):
+
+![tabby-sftp-tab using_context_menu](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/using_context_menu.png?raw=true)
+
+* Then sftp tab for the ssh connection well open:
+
+![tabby-sftp-tab using_context_menu_result](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/using_context_menu_result.png?raw=true)
+
+
+
+
 
 # Implementation Description
-1. Add [ssh2sftp_win_template， ssh2sftp_linux_template, ssh2sftp_mac_template] profiles to config when first call open sftp tab by context menu or hotkey(Ctrl-Shift-S),  and you can manually set it in Settings/Config file.
+1. The plugin well add [ssh2sftp_win_template， ssh2sftp_linux_template, ssh2sftp_mac_template] profiles on start(when config service ready), also you can set/change it in Settings/Config file manually.
    
 ```
 profiles:
@@ -52,7 +95,4 @@ profiles:
     id: local:custom:ssh2sftp_mac_template:33162a26-7807-4c5e-ac2d-68cd2d9a4a24
     group: ssh2sftp_template
 ```
-
-2. On window this plugin will use ssh2sftp_win_template profile to open sftp tab of ssh tab connection, you need fix sftp.exe path by edit profiles.ssh2sftp_win_template.command. It is recommended to install [git for Windows](https://gitforwindows.org/) and then use the path [git install dir]\usr\bin\sftp.exe, because it provide tab completion.
-3. On linux this plugin will use ssh2sftp_linux_template profile to open sftp tab of ssh tab connection, default sftp provide tab completion.
-4. On macos this plugin will use ssh2sftp_mac_template profile to open sftp tab of ssh tab connection, you need fix sftp path by edit profiles.ssh2sftp_mac_template.command. It is recommended to install openssh (command: brew install openssh) and then use the path /usr/local/opt/openssh/bin/sftp, because it provide tab completion.
+2. The plugin get params(params are: host, port) from ssh connection and use above ssh2sftp_***_template to open sftp tab.
