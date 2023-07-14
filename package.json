@@ -1,6 +1,6 @@
 {
   "name": "tabby-sftp-tab",
-  "version": "0.9.0",
+  "version": "1.0.0",
   "description": "Plugin that allows you to open sftp tab like SecureCRT",
   "keywords": [
     "tabby-plugin",
