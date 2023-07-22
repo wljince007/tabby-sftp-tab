@@ -1,0 +1,2 @@
+npm webpack 
+npm publish

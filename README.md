@@ -95,4 +95,4 @@ profiles:
     id: local:custom:ssh2sftp_mac_template:33162a26-7807-4c5e-ac2d-68cd2d9a4a24
     group: ssh2sftp_template
 ```
-2. The plugin get params(params are: host, port) from ssh connection and use above ssh2sftp_***_template to open sftp tab.
+2. The plugin get params(params are: user, host, port) from ssh connection and use above ssh2sftp_***_template to open sftp tab.

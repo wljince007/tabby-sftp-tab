@@ -156,7 +156,7 @@ export class SftpTabService {
           }
           return ans
         }else {
-            this.logger.warn('open sftp tab just for ssh profile connection。 can not find ssh profile! can not open sftp tab!!!');
+            this.logger.warn('open sftp tab just for ssh profile connection. can not find ssh profile! can not open sftp tab!!!');
         }
     }
     return ans
