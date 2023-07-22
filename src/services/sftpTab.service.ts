@@ -1,21 +1,22 @@
 import { Injectable } from '@angular/core';
 // import { Logger, LogService, HotkeysService, HostAppService } from 'tabby-core';
 import { BaseTabComponent, AppService, Logger, LogService, TabsService, HotkeysService } from 'tabby-core';
-import {Profile, Platform, ProfilesService, HostAppService, ConfigService, PartialProfile } from 'tabby-core';
+import {Profile, Platform, ProfilesService, HostAppService, PartialProfile } from 'tabby-core';
+// import {ConfigService } from 'tabby-core';
 
 import deepClone from 'clone-deep'
-import {SftpTabConfigProvider} from '../config'
+// import {SftpTabConfigProvider} from '../config'
 
-import {SettingsTabComponent} from 'tabby-settings';
+// import {SettingsTabComponent} from 'tabby-settings';
 
 
 @Injectable()
 export class SftpTabService {
   private logger: Logger;
-  private sftpTabConfigProvider: SftpTabConfigProvider;
+  // private sftpTabConfigProvider: SftpTabConfigProvider;
 
   constructor(
-    private config: ConfigService,
+    // private config: ConfigService,
     private app: AppService,
     private profilesService: ProfilesService,
     private hostApp: HostAppService,
@@ -23,7 +24,7 @@ export class SftpTabService {
     private tabsService: TabsService,
     log: LogService    
   ) {
-    this.sftpTabConfigProvider = new SftpTabConfigProvider
+    // this.sftpTabConfigProvider = new SftpTabConfigProvider
     this.logger = log.create('open-sftp-tab');
     this.logger.info('starting...');
   }
@@ -35,11 +36,11 @@ export class SftpTabService {
       }
     });
     this.logger.info('init succ!');
-    this.config.ready$.toPromise().then(() => {
-      this.tryAddSftpProfilesTemplateToConfigService().then(() => {
-        this.logger.info('call tryAddSftpProfilesTemplateToConfigService after config.ready');
-      })
-    })
+    // this.config.ready$.toPromise().then(() => {
+    //   this.tryAddSftpProfilesTemplateToConfigService().then(() => {
+    //     this.logger.info('call tryAddSftpProfilesTemplateToConfigService after config.ready');
+    //   })
+    // })
   }
 
   findFirstSshProfile(token: any):   Profile | null {
@@ -63,59 +64,89 @@ export class SftpTabService {
     return null
   }
 
-  // add sftp profile template to config service and save to config file
-  async tryAddSftpProfilesTemplateToConfigService(): Promise<void> {
-    let modifiedConfig :boolean = false
-    this.sftpTabConfigProvider.defaults.profiles.forEach(sftpProfile => {
-      let find_in_config : boolean = false
-      this.config.store.profiles.forEach(profile => {
-        if (profile?.name == sftpProfile.name){
-          find_in_config = true
-        }
-      });
-      if (!find_in_config) {
-        this.config.store.profiles = [...this.config.store.profiles, deepClone(sftpProfile)]
-        modifiedConfig = true
-      }
-    });
-    if (modifiedConfig) {
-      await this.config.save()
-      await this.config.load()
+  // // add sftp profile template to config service and save to config file
+  // async tryAddSftpProfilesTemplateToConfigService(): Promise<void> {
+  //   let modifiedConfig :boolean = false
+  //   this.sftpTabConfigProvider.defaults.profiles.forEach(sftpProfile => {
+  //     let find_in_config : boolean = false
+  //     this.config.store.profiles.forEach(profile => {
+  //       if (profile?.name == sftpProfile.name){
+  //         find_in_config = true
+  //       }
+  //     });
+  //     if (!find_in_config) {
+  //       this.config.store.profiles = [...this.config.store.profiles, deepClone(sftpProfile)]
+  //       modifiedConfig = true
+  //     }
+  //   });
+  //   if (modifiedConfig) {
+  //     await this.config.save()
+  //     await this.config.load()
   
-      // If the settings tab is already open, close and reopen the settings tab on the same tabs index.
-      const settingsTabOld = this.app.tabs.find(tab => tab instanceof SettingsTabComponent)
-      if (settingsTabOld) {
-          const settingsTabOldIdx = this.app.tabs.indexOf(settingsTabOld)
-          this.app.closeTab(settingsTabOld)
+  //     // If the settings tab is already open, close and reopen the settings tab on the same tabs index.
+  //     const settingsTabOld = this.app.tabs.find(tab => tab instanceof SettingsTabComponent)
+  //     if (settingsTabOld) {
+  //         const settingsTabOldIdx = this.app.tabs.indexOf(settingsTabOld)
+  //         this.app.closeTab(settingsTabOld)
   
-          const settingsTab = this.tabsService.create({ type: SettingsTabComponent })
-          this.app.addTabRaw(settingsTab,settingsTabOldIdx)
-          this.app.selectTab(settingsTab)
-      }
-    }
-  }
+  //         const settingsTab = this.tabsService.create({ type: SettingsTabComponent })
+  //         this.app.addTabRaw(settingsTab,settingsTabOldIdx)
+  //         this.app.selectTab(settingsTab)
+  //     }
+  //   }
+  // }
 
 
   async findSftpProfileTemplate(): Promise<PartialProfile<Profile>|null> {
-    let profileName =""
+    // let profileName =""
+    // if (this.hostApp.platform === Platform.macOS) {
+    //     profileName = "ssh2sftp_mac_template"
+    // } else if (this.hostApp.platform === Platform.Linux) {
+    //     profileName = "ssh2sftp_linux_template"
+    // } else if (this.hostApp.platform === Platform.Windows){
+    //     profileName = "ssh2sftp_win_template"
+    // } else if (this.hostApp.platform === Platform.Web){
+    //     return null
+    // }
+
+    let osDefault = (await this.profilesService.getProfiles()).find(x => x.name === "OS default")
     if (this.hostApp.platform === Platform.macOS) {
-        profileName = "ssh2sftp_mac_template"
+      osDefault.options["command"] = "/usr/local/opt/openssh/bin/sftp"
+      osDefault.options["args"] = [
+        '-oStrictHostKeyChecking=no',
+        '-oServerAliveInterval=30',
+        '-oServerAliveCountMax=1051200',
+        '-oTCPKeepAlive=yes'
+      ]
     } else if (this.hostApp.platform === Platform.Linux) {
-        profileName = "ssh2sftp_linux_template"
+      osDefault.options["command"] = "/usr/bin/sftp"
+      osDefault.options["args"] = [
+        '-oStrictHostKeyChecking=no',
+        '-oServerAliveInterval=30',
+        '-oServerAliveCountMax=1051200',
+        '-oTCPKeepAlive=yes'
+      ]
     } else if (this.hostApp.platform === Platform.Windows){
-        profileName = "ssh2sftp_win_template"
+      osDefault.options["command"] = 'c:\\Git\\usr\\bin\\sftp.exe'
+      osDefault.options["args"] = [
+        '-oStrictHostKeyChecking=no',
+        '-oServerAliveInterval=30',
+        '-oServerAliveCountMax=1051200',
+        '-oTCPKeepAlive=yes'
+      ]
     } else if (this.hostApp.platform === Platform.Web){
         return null
     }
 
-    let sftpProfileTemplate = (await this.profilesService.getProfiles()).find(x => x.name === profileName)
-    if (!sftpProfileTemplate) {
-      // Attempt to add a default sftp profile when not found
-      this.logger.warn(`Requested profile ${profileName} not found, try adding ...`, profileName);
-      await this.tryAddSftpProfilesTemplateToConfigService()
-      sftpProfileTemplate = (await this.profilesService.getProfiles()).find(x => x.name === profileName)
-    }
-    return sftpProfileTemplate
+    return osDefault
+
+    // if (!sftpProfileTemplate) {
+    //   // Attempt to add a default sftp profile when not found
+    //   this.logger.warn(`Requested profile ${profileName} not found, try adding ...`, profileName);
+    //   await this.tryAddSftpProfilesTemplateToConfigService()
+    //   sftpProfileTemplate = (await this.profilesService.getProfiles()).find(x => x.name === profileName)
+    // }
+    // return sftpProfileTemplate
   }
 
   async openSftpImpl (tab: BaseTabComponent|null): Promise<BaseTabComponent|null>{
