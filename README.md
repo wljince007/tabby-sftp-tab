@@ -105,7 +105,7 @@ profiles:
 
 # Version logs
 ## 1.0.1
-* Set ssh2sftp_***_template.isTemplate=true, so ssh2sftp_***_template no display in "Profile & connections".
+* Set ssh2sftp_***_template.isTemplate=true, so ssh2sftp_***_template no display in "Profile & connections" when user select profile to open, but can edit in settings."Profile & connections".
 
 ## 1.0.0
 * Automatically add ssh2sftp after completing the configuration service_***_ Template.
