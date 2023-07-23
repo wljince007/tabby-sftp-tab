@@ -2,11 +2,20 @@ import { ConfigProvider, Platform } from 'tabby-core';
 
 /** @hidden */
 export class SftpTabConfigProvider extends ConfigProvider {
-  public platformDefaults = {
-    [Platform.macOS]: require('./configDefaults.macos.yaml').default,
-    [Platform.Windows]: require('./configDefaults.windows.yaml').default,
-    [Platform.Linux]: require('./configDefaults.linux.yaml').default,
-    [Platform.Web]: require('./configDefaults.web.yaml').default,
+  public defaults = {
+    hotkeys: {
+        'open-sftp-tab':[
+          'Ctrl-Shift-S',
+        ],
+    },
   }
-  public defaults = require('./configDefaults.yaml').default
+
+  public platformDefaults = {
+      [Platform.macOS]: {
+      },
+      [Platform.Windows]: {
+      },
+      [Platform.Linux]: {
+      },
+  }
 }
