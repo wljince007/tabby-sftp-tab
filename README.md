@@ -13,7 +13,7 @@ This simple plugin allows you click a context menu(Open Sftp Tab) or press a hot
 
 ## Configuration
 
-![tabby-sftp-tab setting_ssh2sftp_template](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/setting_ssh2sftp_template.png?raw=true)
+![tabby-sftp-tab setting_ssh2sftp_XXX_template](https://github.com/wljince007/tabby-sftp-tab/blob/main/doc/setting_ssh2sftp_template.png?raw=true)
 
 * On window this plugin will use ssh2sftp_win_template profile to open sftp tab of ssh tab connection, you need fix sftp.exe path by edit profiles.ssh2sftp_win_template.command. It is recommended to install [git for Windows](https://gitforwindows.org/) and then use the path [git install dir]\usr\bin\sftp.exe, because it provide tab completion. :
   
@@ -101,14 +101,14 @@ profiles:
     disableDynamicTitle: true
     isTemplate: true
 ```
-2. The plugin get params(params are: user, host, port) from ssh connection and use above ssh2sftp_***_template to open sftp tab.
+2. The plugin get params(params are: user, host, port) from ssh connection and use above ssh2sftp_XXX_template to open sftp tab.
 
 # Version logs
 ## 1.0.1
-* Set ssh2sftp_***_template.isTemplate=true, so ssh2sftp_***_template no display in "Profile & connections" when user select profile to open, but can edit in settings."Profile & connections".
+* Set ssh2sftp_XXX_template.isTemplate=true, so ssh2sftp_XXX_template no display in "Profile & connections" when user select profile to open, but can edit in settings."Profile & connections".
 
 ## 1.0.0
-* Automatically add ssh2sftp after completing the configuration service_***_ Template.
+* Automatically add ssh2sftp_XXX_template after config service ready.
 * Refer to tabby-trzsz to modify user instructions.
 
 ## 0.0.9
