@@ -72,6 +72,11 @@ export class SftpTabService {
         if (profile?.name == sftpProfile.name){
           find_in_config = true
         }
+        // set isTemplate to true
+        if (profile?.isTemplate != true){
+          profile.isTemplate = true
+          modifiedConfig = true
+        }
       });
       if (!find_in_config) {
         this.config.store.profiles = [...this.config.store.profiles, deepClone(sftpProfile)]
