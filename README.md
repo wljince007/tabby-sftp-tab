@@ -57,29 +57,33 @@ profiles:
     icon: fas fa-terminal
     options:
       command: c:\Git\usr\bin\sftp.exe
+      env: {}
+      cwd: ''
       args:
         - '-oStrictHostKeyChecking=no'
         - '-oServerAliveInterval=30'
         - '-oServerAliveCountMax=1051200'
         - '-oTCPKeepAlive=yes'
-      env: {}
-      cwd: ''
     group: ssh2sftp_template
     id: local:custom:ssh2sftp_win_template:c617da05-d05c-482d-8ca6-3c7eb99452e9
+    disableDynamicTitle: true
+    isTemplate: true
   - type: local
     name: ssh2sftp_linux_template
     icon: fas fa-terminal
     options:
       command: /usr/bin/sftp
+      env: {}
+      cwd: ''
       args:
         - '-oStrictHostKeyChecking=no'
         - '-oServerAliveInterval=30'
         - '-oServerAliveCountMax=1051200'
         - '-oTCPKeepAlive=yes'
-      env: {}
-      cwd: ''
     group: ssh2sftp_template
     id: local:custom:ssh2sftp_linux_template:6c4bcc75-f690-482a-a882-40e1c9851a3d
+    disableDynamicTitle: true
+    isTemplate: true
   - type: local
     name: ssh2sftp_mac_template
     icon: fas fa-terminal
@@ -91,8 +95,23 @@ profiles:
         - '-oServerAliveCountMax=1051200'
         - '-oTCPKeepAlive=yes'
       env: {}
-      cwd: ''
+      cwd: /Volumes/RamDisk
     id: local:custom:ssh2sftp_mac_template:33162a26-7807-4c5e-ac2d-68cd2d9a4a24
     group: ssh2sftp_template
+    disableDynamicTitle: true
+    isTemplate: true
 ```
 2. The plugin get params(params are: user, host, port) from ssh connection and use above ssh2sftp_***_template to open sftp tab.
+
+# Version logs
+## 1.0.1
+* Set ssh2sftp_***_template.isTemplate=true, so ssh2sftp_***_template no display in "Profile & connections".
+
+## 1.0.0
+* Automatically add ssh2sftp after completing the configuration service_***_ Template.
+* Refer to tabby-trzsz to modify user instructions.
+
+## 0.0.9
+* Implementing the sftp tab function of the SecureCRT class for the first time.
+
+
