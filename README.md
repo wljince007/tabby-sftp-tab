@@ -95,7 +95,7 @@ profiles:
         - '-oServerAliveCountMax=1051200'
         - '-oTCPKeepAlive=yes'
       env: {}
-      cwd: /Volumes/RamDisk
+      cwd: ''
     id: local:custom:ssh2sftp_mac_template:33162a26-7807-4c5e-ac2d-68cd2d9a4a24
     group: ssh2sftp_template
     disableDynamicTitle: true
