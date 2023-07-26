@@ -104,6 +104,10 @@ profiles:
 2. The plugin get params(params are: user, host, port) from ssh connection and use above ssh2sftp_XXX_template to open sftp tab.
 
 # Version logs
+
+## 1.0.3
+* fix err to set isTemplate=true for no ssh2sftp_XXX_template
+  
 ## 1.0.2
 * Auto focus sftp tab after created.
   

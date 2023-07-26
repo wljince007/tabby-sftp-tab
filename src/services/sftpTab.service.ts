@@ -72,17 +72,25 @@ export class SftpTabService {
         if (profile?.name == sftpProfile.name){
           find_in_config = true
         }
-        // set isTemplate to true
-        if (profile?.isTemplate != true){
-          profile.isTemplate = true
-          modifiedConfig = true
-        }
       });
       if (!find_in_config) {
         this.config.store.profiles = [...this.config.store.profiles, deepClone(sftpProfile)]
         modifiedConfig = true
       }
     });
+
+    // set isTemplate to true
+    this.sftpTabConfigProvider.defaults.profiles.forEach(sftpProfile => {
+      for (let index = 0; index < this.config.store.profiles.length; index++) {
+        const profile = this.config.store.profiles[index];
+        if (profile?.name == sftpProfile.name && profile?.isTemplate != true){
+          profile.isTemplate = true
+          modifiedConfig = true
+        }
+      }
+    });
+
+
     if (modifiedConfig) {
       await this.config.save()
       await this.config.load()
