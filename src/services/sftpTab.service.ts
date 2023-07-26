@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 // import { Logger, LogService, HotkeysService, HostAppService } from 'tabby-core';
-import { BaseTabComponent, AppService, Logger, LogService, TabsService, HotkeysService } from 'tabby-core';
+import { BaseTabComponent, SplitTabComponent, AppService, Logger, LogService, TabsService, HotkeysService } from 'tabby-core';
 import {Profile, Platform, ProfilesService, HostAppService, ConfigService, PartialProfile } from 'tabby-core';
 
 import deepClone from 'clone-deep'
@@ -123,10 +123,10 @@ export class SftpTabService {
     return sftpProfileTemplate
   }
 
-  async openSftpImpl (tab: BaseTabComponent|null): Promise<BaseTabComponent|null>{
+  async openSftpImpl (activeTab: BaseTabComponent|null): Promise<BaseTabComponent|null>{
     let ans :BaseTabComponent|null = null
-    if (tab == null) {
-      tab = this.app.activeTab
+    if (activeTab == null) {
+      activeTab = this.app.activeTab
     }
 
     let sftpProfileTemplate = await this.findSftpProfileTemplate()
@@ -136,7 +136,7 @@ export class SftpTabService {
         return null
     }else {
         let sftpProfile = deepClone(sftpProfileTemplate)
-        const token = await tab.getRecoveryToken()
+        const token = await activeTab.getRecoveryToken()
         let sshprofile : Profile | null =this.findFirstSshProfile(token)
         if (sshprofile != null) {
           sftpProfile.name =  "sftp_" + sshprofile?.name
@@ -153,9 +153,12 @@ export class SftpTabService {
           if (params) {
               const sftptab = this.tabsService.create(params)
               if (sftptab) {
-                  this.app.addTabRaw(sftptab,this.app.tabs.indexOf(tab)+1)
-                  this.app.selectTab(sftptab)
-                  ans = sftptab
+                  const splitTab = this.tabsService.create({ type: SplitTabComponent })
+                  splitTab.addTab(sftptab, null, 'r')
+                  this.app.addTabRaw(splitTab,this.app.tabs.indexOf(activeTab)+1)
+                  this.app.selectTab(splitTab)
+                  splitTab.focus(sftptab)
+                  ans = splitTab
                   this.logger.info('open sftp tab for ssh profile succ');
               }
           }
@@ -167,9 +170,9 @@ export class SftpTabService {
     return ans
   }
 
-  opensftp(tab: BaseTabComponent|null):void {
+  opensftp(activeTab: BaseTabComponent|null):void {
     this.logger.info('try open sftp tab for ssh profile');
-    this.openSftpImpl(tab).then((baseTabComponent) => {
+    this.openSftpImpl(activeTab).then((baseTabComponent) => {
       if (baseTabComponent ==null){
         this.logger.error('open sftp tab for ssh profile error!!!');
       }
