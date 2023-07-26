@@ -95,7 +95,7 @@ export class SftpTabService {
   
           const settingsTab = this.tabsService.create({ type: SettingsTabComponent })
           this.app.addTabRaw(settingsTab,settingsTabOldIdx)
-          this.app.selectTab(settingsTab)
+          // this.app.selectTab(settingsTab)
       }
     }
   }
