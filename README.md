@@ -119,6 +119,6 @@ profiles:
 * Refer to tabby-trzsz to modify user instructions.
 
 ## 0.0.9
-* Implementing the sftp tab function of the SecureCRT class for the first time.
+* First time implement open sftp tab for ssh connection like SecureCRT.
 
 
