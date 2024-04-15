@@ -105,6 +105,11 @@ profiles:
 
 # Version logs
 
+## 1.0.4
+* support multiple jump hosts : support ProxyJump, not support ProxyCommand.
+ProxyJump ref:[ssh-proxy-bastion-proxyjump](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump)
+
+  
 ## 1.0.3
 * fix err to set isTemplate=true for no ssh2sftp_XXX_template
   
