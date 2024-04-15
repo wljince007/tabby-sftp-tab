@@ -21,7 +21,7 @@ export class SftpTabService {
     private hostApp: HostAppService,
     private hotkeys: HotkeysService,
     private tabsService: TabsService,
-    log: LogService    
+    log: LogService
   ) {
     this.sftpTabConfigProvider = new SftpTabConfigProvider
     this.logger = log.create('open-sftp-tab');
@@ -151,17 +151,17 @@ export class SftpTabService {
           if(sftpProfile?.options && sshprofile?.options){
             let args = sftpProfile.options["args"]
             if (args as Array<string>) {
+              // Support ProxyJump
+              const jumphost = sshprofile.options?.jumpHost || ''
+              if (jumphost.startsWith('openssh-config:')){
+                args.push('-J ' + jumphost.replace('openssh-config:',''))
+              }
               const port = sshprofile.options.port as number
               if (port>0){
                 args.push("-P")
                 args.push(port.toString())
               }
               args.push(sshprofile.options.user as string + "@" + sshprofile.options.host as string)
-              // Support ProxyJump
-              const jumphost = sshprofile.options?.jumpHost || ''
-              if (jumphost.startsWith('openssh-config:')){
-                args.push('-J ' + jumphost.replace('openssh-config:',''))
-              }
             }
           }
           let params = await this.profilesService.newTabParametersForProfile(sftpProfile)

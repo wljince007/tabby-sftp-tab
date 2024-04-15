@@ -105,10 +105,13 @@ profiles:
 
 # Version logs
 
-## 1.0.5
-* support multiple jump hosts : support ProxyJump, not support ProxyCommand.
+## 1.0.6
+* fix bug: support multiple jump hosts : support ProxyJump, not support ProxyCommand.
 * ProxyJump ref:[ssh-proxy-bastion-proxyjump](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump)
-* fix bug
+
+## 1.0.5
+* fix bug: support multiple jump hosts : support ProxyJump, not support ProxyCommand.
+* ProxyJump ref:[ssh-proxy-bastion-proxyjump](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump)
 
 ## 1.0.4
 * support multiple jump hosts : support ProxyJump, not support ProxyCommand.
