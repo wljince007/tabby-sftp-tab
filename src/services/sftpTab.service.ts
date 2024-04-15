@@ -152,16 +152,39 @@ export class SftpTabService {
             let args = sftpProfile.options["args"]
             if (args as Array<string>) {
               // Support ProxyJump
-              const jumphost = sshprofile.options?.jumpHost || ''
-              if (jumphost.startsWith('openssh-config:')){
-                args.push('-J ' + jumphost.replace('openssh-config:',''))
+              if (sshprofile.options?.jumpHost != null){
+                const jumphost = sshprofile.options.jumpHost as string
+                if (jumphost.startsWith('openssh-config:')){
+                  args.push('-J ' + jumphost.replace('openssh-config:',''))
+                }
+              } 
+              // Support ProxyCommand
+              if (sshprofile.options?.proxyCommand != null){
+                const proxyCommand = sshprofile.options.proxyCommand as string
+                args.push(`-oProxyCommand="${proxyCommand}"`)
               }
-              const port = sshprofile.options.port as number
-              if (port>0){
-                args.push("-P")
-                args.push(port.toString())
+              if (sshprofile.options?.port != null){
+                const port = sshprofile.options.port as number
+                if (port > 0){
+                  args.push("-P")
+                  args.push(port.toString())
+                }
               }
-              args.push(sshprofile.options.user as string + "@" + sshprofile.options.host as string)
+              let user = ''
+              if (sshprofile.options?.user != null){
+                user = sshprofile.options.user as string
+              }
+              let host = ''
+              if (sshprofile.options?.host != null){
+                host = sshprofile.options.host as string
+              }
+              if (host != ''){
+                if (user != ''){
+                  args.push(`${user}@${host}`)
+                } else {
+                  args.push(host)
+                }
+              }
             }
           }
           let params = await this.profilesService.newTabParametersForProfile(sftpProfile)
