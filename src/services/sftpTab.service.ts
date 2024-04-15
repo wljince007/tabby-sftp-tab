@@ -160,7 +160,7 @@ export class SftpTabService {
               // Support ProxyJump
               const jumphost = sshprofile.options?.jumpHost || ''
               if (jumphost.startsWith('openssh-config:')){
-                args.push(jumphost.replace('openssh-config:',''))
+                args.push('-J ' + jumphost.replace('openssh-config:',''))
               }
             }
           }
