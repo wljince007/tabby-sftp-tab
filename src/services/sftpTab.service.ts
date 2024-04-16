@@ -43,7 +43,8 @@ export class SftpTabService {
   }
 
   findFirstSshProfile(token: any):   Profile | null {
-    this.logger.info(`token:${token}`, token)
+    // this.logger.info(`token:${token}`, token)
+    this.logger.info('token:', token)
     if (token.type == "app:ssh-tab" ) {
       if (token.profile!=null) {
         return token.profile
@@ -151,43 +152,61 @@ export class SftpTabService {
           if(sftpProfile?.options && sshprofile?.options){
             let args = sftpProfile.options["args"]
             if (args as Array<string>) {
-              // Support ProxyJump
-              if (sshprofile.options?.jumpHost != null){
-                const jumphost = sshprofile.options.jumpHost as string
-                if (jumphost.startsWith('openssh-config:')){
-                  args.push('-J ' + jumphost.replace('openssh-config:',''))
+              // only support ProxyCommand writed in .ssh/config
+              if (sshprofile.options?.proxyCommand != null && sshprofile?.id != null){
+                const id = sshprofile.id as string
+                if (id.startsWith('openssh-config:')){
+                  args.push(id.replace('openssh-config:',''))
                 }
-              } 
-              // Support ProxyCommand
-              if (sshprofile.options?.proxyCommand != null){
-                const proxyCommand = sshprofile.options.proxyCommand as string
-                args.push(`-oProxyCommand="${proxyCommand}"`)
-              }
-              if (sshprofile.options?.port != null){
-                const port = sshprofile.options.port as number
-                if (port > 0){
-                  args.push("-P")
-                  args.push(port.toString())
+              } else {
+                // only support ProxyJump writed in .ssh/config
+                if (sshprofile.options?.jumpHost != null){
+                  const jumphost = sshprofile.options.jumpHost as string
+                  if (jumphost.startsWith('openssh-config:')){
+                    args.push('-J ' + jumphost.replace('openssh-config:',''))
+                  }
+                } 
+                
+                if (sshprofile.options?.privateKeys != null){
+                  const privateKeys = sshprofile.options.privateKeys as Array<string>
+                  privateKeys.forEach(privateKey => {
+                    args.push("-i")
+                    args.push(privateKey)
+                  });
                 }
-              }
-              let user = ''
-              if (sshprofile.options?.user != null){
-                user = sshprofile.options.user as string
-              }
-              let host = ''
-              if (sshprofile.options?.host != null){
-                host = sshprofile.options.host as string
-              }
-              if (host != ''){
-                if (user != ''){
-                  args.push(`${user}@${host}`)
-                } else {
-                  args.push(host)
+
+                if (sshprofile.options?.port != null){
+                  const port = sshprofile.options.port as number
+                  if (port > 0){
+                    args.push("-P")
+                    args.push(port.toString())
+                  }
+                }
+
+                let user = ''
+                if (sshprofile.options?.user != null){
+                  user = sshprofile.options.user as string
+                }
+
+                let host = ''
+                if (sshprofile.options?.host != null){
+                  host = sshprofile.options.host as string
+                }
+
+                if (host != ''){
+                  if (user != ''){
+                    args.push(`${user}@${host}`)
+                  } else {
+                    args.push(host)
+                  }
                 }
               }
             }
+            this.logger.info('sftp args:', args)
           }
+          // this.logger.debug('sftpProfile:', sftpProfile)
           let params = await this.profilesService.newTabParametersForProfile(sftpProfile)
+          // this.logger.debug('params:', params)
           if (params) {
               const sftptab = this.tabsService.create(params)
               if (sftptab) {
