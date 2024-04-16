@@ -105,6 +105,12 @@ profiles:
 
 # Version logs
 
+## 1.0.7
+* support multiple jump hosts, only support multiple jump of type ProxyCommand and ProxyJump written in openssh-config files. See ssh man page about openssh-config, search `-F configfile`. For example openssh-config files on macos is:
+  - the system-wide configuration file: /usr/local/etc/ssh/ssh_config
+  - the per-user configuration file: ~/.ssh/config
+* ProxyJump ref:[ssh-proxy-bastion-proxyjump](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump)
+
 ## 1.0.6
 * fix bug: support multiple jump hosts : support ProxyJump, not support ProxyCommand.
 * ProxyJump ref:[ssh-proxy-bastion-proxyjump](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump)
@@ -117,7 +123,6 @@ profiles:
 * support multiple jump hosts : support ProxyJump, not support ProxyCommand.
 * ProxyJump ref:[ssh-proxy-bastion-proxyjump](https://www.redhat.com/sysadmin/ssh-proxy-bastion-proxyjump)
 
-  
 ## 1.0.3
 * fix err to set isTemplate=true for no ssh2sftp_XXX_template
   

@@ -152,21 +152,12 @@ export class SftpTabService {
           if(sftpProfile?.options && sshprofile?.options){
             let args = sftpProfile.options["args"]
             if (args as Array<string>) {
-              // only support ProxyCommand writed in .ssh/config
-              if (sshprofile.options?.proxyCommand != null && sshprofile?.id != null){
-                const id = sshprofile.id as string
-                if (id.startsWith('openssh-config:')){
-                  args.push(id.replace('openssh-config:',''))
-                }
+              // only support multiple jump hosts of type ProxyCommand and ProxyJump in .ssh/config
+              if ((sshprofile.options?.proxyCommand != null || sshprofile.options?.jumpHost != null) && 
+                  (sshprofile?.id != null && sshprofile.id.startsWith('openssh-config:'))
+                  ){
+                args.push(sshprofile.id.replace('openssh-config:',''))
               } else {
-                // only support ProxyJump writed in .ssh/config
-                if (sshprofile.options?.jumpHost != null){
-                  const jumphost = sshprofile.options.jumpHost as string
-                  if (jumphost.startsWith('openssh-config:')){
-                    args.push('-J ' + jumphost.replace('openssh-config:',''))
-                  }
-                } 
-                
                 if (sshprofile.options?.privateKeys != null){
                   const privateKeys = sshprofile.options.privateKeys as Array<string>
                   privateKeys.forEach(privateKey => {
